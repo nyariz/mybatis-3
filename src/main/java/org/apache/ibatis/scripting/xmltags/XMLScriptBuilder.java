@@ -98,6 +98,7 @@ public class XMLScriptBuilder extends BaseBuilder {
     map.put("when", new IfHandler());
     map.put("otherwise", new OtherwiseHandler());
     map.put("bind", new BindHandler());
+    map.put("include", new IncludeHandler());
     return map.get(nodeName);
   }
 
@@ -250,6 +251,18 @@ public class XMLScriptBuilder extends BaseBuilder {
       }
       return defaultSqlNode;
     }
+  }
+  
+  private class IncludeHandler implements NodeHandler {
+
+	@Override
+	public void handleNode(XNode nodeToHandle, List<SqlNode> targetContents) {
+	      final String refid = nodeToHandle.getStringAttribute("refid");
+	      final IncludeSqlNode node = new IncludeSqlNode(configuration, refid);
+	      targetContents.add(node);
+		
+	}
+	  
   }
 
 }
